@@ -1,0 +1,59 @@
+h1 {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  padding-top: 72px;
+  padding-bottom: 36px;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+}
+
+.app-container {
+  max-width: 769px;
+  width: 769px;
+
+}
+
+.form-container {
+  width: 100%;
+}
+
+.car-input {
+  width: 24%;
+  height: 36px;
+  padding-left: 12px;
+  border: 1px solid #C1B9B8;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.car-input:focus {
+  border: 1px solid #00AEEF;
+}
+
+.car-submit {
+  background: #00AEEF;
+  color: white;
+  width: 24%;
+  height: 36px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border: 1px solid #00AEEF;
+  border-radius: 5px;
+
+}
+
+.car-submit:hover {
+  background: #0081B4;
+  border: 1px solid #0081B4;
+  cursor: pointer;
+}
+
+
+.cars-table {
+  width: 100%;
+}
