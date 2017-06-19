@@ -16,6 +16,6 @@
   "homepage": "N/A",
   "dependencies": {
     "express": "^4.15.3",
-    "express-database": "^1.0.0"
+    "sqlite3": "^3.1.8"
   }
 }

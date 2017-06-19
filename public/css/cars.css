@@ -88,6 +88,8 @@ h1 {
 }
 
 .table-row td {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
   height: 68px;
   /*display: flex;*/
   /*align-items: center;*/
