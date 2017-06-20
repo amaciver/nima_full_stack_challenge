@@ -38,7 +38,11 @@ const submitCar = (e) => {
   if (!isBlanks) {
     postCar(car)
     .then( () => {
-      console.log('success')
+      console.log('success');
+      fetchCars().then( (cars) => {
+        console.log(Object.keys(cars).length);
+        populateTable(cars);
+      })
     })
     .catch( () => {
       console.log('fail');

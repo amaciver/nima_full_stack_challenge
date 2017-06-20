@@ -19,9 +19,9 @@ app.get("/cars", function (req, res) {
   db = new sqlite3.Database('cars.sqlite')
   let data = {};
   let dbPromise = new Promise( (resolve, reject) => {
-    db.all('SELECT id, make, model, year, color FROM cars', (err, rows) => {
+    db.all('SELECT rowid, make, model, year, color FROM cars', (err, rows) => {
       rows.forEach( (row) => {
-        data[row.id] = { make: row.make, model: row.model, year: row.year }
+        data[row.rowid] = { make: row.make, model: row.model, year: row.year }
       })
     resolve(data);
     })
@@ -36,9 +36,17 @@ app.post("/cars", function (req, res) {
   if (req.body.make === '' || req.body.model === '' || req.body.year === '') {
     res.status(500).send({ error: 'Something failed!' })
   } else {
-    res.json({success : "Updated Successfully", status : 200});
+    db = new sqlite3.Database('cars.sqlite')
+    let dbPromise = new Promise( (resolve, reject) => {
+      var stmt = db.prepare('INSERT INTO cars VALUES (?, ?, ?, ?)', () => resolve())
+      stmt.run(req.body.make, req.body.model, req.body.year, 'clear')
+      stmt.finalize()
+    })
+    dbPromise.then( () => {
+      res.json({success : "Updated Successfully", status : 200});
+    })
+    db.close();
   }
-
 })
 
 // Route to get prices

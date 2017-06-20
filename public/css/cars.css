@@ -53,6 +53,7 @@ h1 {
   position: absolute;
   padding-left: 12px;
   padding-top: 12px;
+  padding-bottom: 6px;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 14px;
   color: #EF0058;
@@ -133,7 +134,7 @@ h1 {
     flex-flow: column;
     margin-bottom: 48px;
   }
-  .car-input {
+  .input-container {
     width: calc(100% - 24px);
     margin-left: 12px;
     margin-right: 12px;
@@ -143,5 +144,8 @@ h1 {
     width: calc(100% - 24px);
     margin-left: 12px;
     margin-right: 12px;
+  }
+  .error {
+    position: relative;
   }
 }

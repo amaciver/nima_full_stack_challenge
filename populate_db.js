@@ -9,13 +9,13 @@ var sample = 'cars.csv';
 fs.readFile(sample, 'UTF-8', function(err, csv) {
   db.serialize(function () {
     db.run('DROP TABLE cars');
-    db.run('CREATE TABLE IF NOT EXISTS cars (id INT, make TEXT, model TEXT, year INT, color TEXT)')
-    var stmt = db.prepare('INSERT INTO cars VALUES (?, ?, ?, ?, ?)')
+    db.run('CREATE TABLE IF NOT EXISTS cars (make TEXT, model TEXT, year INT, color TEXT)')
+    var stmt = db.prepare('INSERT INTO cars VALUES (?, ?, ?, ?)')
 
     $.csv.toArrays(csv, {}, function(err, data) {
       for(var i=1, len=data.length; i<len; i++) {
         // console.log(data[i]);
-        stmt.run(data[i][0], data[i][1], data[i][2], data[i][3], data[i][4])
+        stmt.run(data[i][1], data[i][2], data[i][3], data[i][4])
       }
     });
 
