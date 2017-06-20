@@ -1,6 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", (event) => {
     cars = fetchCars().then( (cars) => populateTable(cars) );
+    submitBtn = document.getElementById('car-submit');
+    submitBtn.addEventListener('click', submitCar);
   });
 
 const fetchCars = () => {
@@ -10,13 +12,25 @@ const fetchCars = () => {
   });
 };
 
-const createCar = (car) => {
+const postCar = (car) => {
   return $.ajax({
     method: 'POST',
-    url: '/cars'
-    data: {car}
+    url: '/cars',
+    data: JSON.stringify(car),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json"
   });
 };
+
+const submitCar = (e) => {
+  e.preventDefault();
+  const car = {};
+  const inputs = document.querySelectorAll('.car-input');
+  inputs.forEach( (input) => {
+    car[[input.name]] = input.value;
+  })
+  postCar(car).then( () => console.log('success'));
+}
 
 const populateTable = (cars) => {
   const table = document.getElementsByTagName('tbody')[0];

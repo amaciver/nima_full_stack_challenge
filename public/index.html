@@ -16,12 +16,14 @@
             Your Car Lot
           </h1>
         </header>
-        <form action="/cars" method="post" class="form-container">
+        <div class="form-container">
+        <!-- <form action="/cars" method="post" class="form-container"> -->
           <input class="car-input" type="text" name="make" placeholder="Make" value="">
           <input class="car-input" type="text" name="model" placeholder="Model" value="">
           <input class="car-input" type="text" name="year" placeholder="Year" value="">
-          <input class="car-submit" type="submit" name="make" value="ADD">
-        </form>
+          <input id="car-submit" class="car-submit" type="submit" name="make" value="ADD">
+        <!-- </form> -->
+        </div>
 
         <table id="cars-table" class="cars-table">
           <tr class="table-header">
