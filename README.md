@@ -12,10 +12,14 @@ Time-spent: 7 hours, including research on express.js and additional middlewares
 * sqlite3 db
 * frontend error-handling on inputs
 * responsive layout
+* new cars persist and appear on list
 * backend error catching for blank inputs (just in case :)
+
 
 
 ### Refinements TBD
 * returning only the new car object to be appended onto the table instead of fetching all cars again
 * validating year as integer
 * bonus features with prices
+* 'loading' status after post
+* 'success' UI feature of some sort
