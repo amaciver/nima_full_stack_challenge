@@ -6,6 +6,10 @@ h1 {
   padding-bottom: 36px;
 }
 
+.hidden {
+  display: none;
+}
+
 .page {
   display: flex;
   justify-content: center;
@@ -23,8 +27,14 @@ h1 {
   display: flex;
 }
 
-.car-input {
+.input-container {
+  position: relative;
   width: 25%;
+  margin-right: 6px;
+}
+
+.car-input {
+  width: 100%;
   height: 36px;
   padding-left: 12px;
   padding-bottom: 3px;
@@ -33,6 +43,19 @@ h1 {
   box-sizing: border-box;
   font-size: 14px;
   margin-right: 6px;
+}
+
+.has-error {
+  border: 1px solid #EF0058;
+}
+
+.error {
+  position: absolute;
+  padding-left: 12px;
+  padding-top: 12px;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: #EF0058;
 }
 
 .car-input::-webkit-input-placeholder {

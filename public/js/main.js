@@ -26,10 +26,36 @@ const submitCar = (e) => {
   e.preventDefault();
   const car = {};
   const inputs = document.querySelectorAll('.car-input');
+  let isBlanks;
   inputs.forEach( (input) => {
+    input.addEventListener('focus', clearErrors(input.parentElement))
     car[[input.name]] = input.value;
+    if (input.value === '') {
+      renderErrors(input.parentElement);
+      isBlanks = true;
+    }
   })
-  postCar(car).then( () => console.log('success'));
+  if (!isBlanks) {
+    postCar(car)
+    .then( () => {
+      console.log('success')
+    })
+    .catch( () => {
+      console.log('fail');
+    })
+  }
+}
+
+const renderErrors = (node) => {
+  node.children[0].className = 'car-input has-error';
+  node.children[1].className = 'error';
+}
+
+const clearErrors = (node) => {
+  return (e) => {
+    node.children[0].className = 'car-input';
+    node.children[1].className = 'error hidden';
+  }
 }
 
 const populateTable = (cars) => {

@@ -33,9 +33,12 @@ app.get("/cars", function (req, res) {
 // Route to add car to list
 app.post("/cars", function (req, res) {
   console.log(req.body);
+  if (req.body.make === '' || req.body.model === '' || req.body.year === '') {
+    res.status(500).send({ error: 'Something failed!' })
+  } else {
+    res.json({success : "Updated Successfully", status : 200});
+  }
 
-
-  res.json({success : "Updated Successfully", status : 200});
 })
 
 // Route to get prices

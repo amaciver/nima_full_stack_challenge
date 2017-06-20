@@ -18,9 +18,18 @@
         </header>
         <div class="form-container">
         <!-- <form action="/cars" method="post" class="form-container"> -->
-          <input class="car-input" type="text" name="make" placeholder="Make" value="">
-          <input class="car-input" type="text" name="model" placeholder="Model" value="">
-          <input class="car-input" type="text" name="year" placeholder="Year" value="">
+          <div class="input-container">
+            <input id="make-input" class="car-input" type="text" name="make" placeholder="Make" value="">
+            <div class='error hidden'> Make cannot be blank </div>
+          </div>
+          <div class="input-container">
+            <input id="model-input" class="car-input" type="text" name="model" placeholder="Model" value="">
+            <div class='error hidden'> Model cannot be blank </div>
+          </div>
+          <div class="input-container">
+            <input id="year-input" class="car-input" type="text" name="year" placeholder="Year" value="">
+            <div class='error hidden'> Year cannot be blank </div>
+          </div>
           <input id="car-submit" class="car-submit" type="submit" name="make" value="ADD">
         <!-- </form> -->
         </div>
