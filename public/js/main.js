@@ -10,6 +10,14 @@ const fetchCars = () => {
   });
 };
 
+const createCar = (car) => {
+  return $.ajax({
+    method: 'POST',
+    url: '/cars'
+    data: {car}
+  });
+};
+
 const populateTable = (cars) => {
   const table = document.getElementsByTagName('tbody')[0];
   Object.keys(cars).forEach( (car) => {
