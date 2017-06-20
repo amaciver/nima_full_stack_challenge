@@ -2,24 +2,8 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('cars.sqlite')
+let db = new sqlite3.Database('cars.sqlite')
 
-db.serialize(function () {
-  db.run('CREATE TABLE IF NOT EXISTS lorem (info TEXT)')
-  var stmt = db.prepare('INSERT INTO lorem VALUES (?)')
-
-  for (var i = 0; i < 10; i++) {
-    stmt.run('Ipsum ' + i)
-  }
-
-  stmt.finalize()
-
-  db.each('SELECT rowid AS id, info FROM lorem', function (err, row) {
-    console.log(row.id + ': ' + row.info)
-  })
-})
-
-db.close()
 
 app.use(express.static('public'))
 
@@ -32,7 +16,24 @@ app.get("/", function (req, res) {
 
 // Route to get cars list
 app.get("/cars", function (req, res) {
-  // TODO: Implement getting cars
+  db = new sqlite3.Database('cars.sqlite')
+  let data = {}
+  let dbPromise = new Promise( (resolve, reject) => {
+
+    db.all('SELECT id, make, model, year, color FROM cars', (err, rows) => {
+      rows.forEach( (row) => {
+        data[row.id] = { make: row.make, model: row.model, year: row.year }
+      })
+
+    console.log(data);
+    resolve(data)
+    })
+
+  })
+  dbPromise.then( (data) => console.log(res.send(data)))
+
+  db.close()
+
 })
 
 // Route to add car to list
