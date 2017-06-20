@@ -25,12 +25,12 @@ app.get("/cars", function (req, res) {
         data[row.id] = { make: row.make, model: row.model, year: row.year }
       })
 
-    console.log(data);
+    // console.log(data);
     resolve(data)
     })
 
   })
-  dbPromise.then( (data) => console.log(res.send(data)))
+  dbPromise.then( (data) => res.send(data))
 
   db.close()
 
