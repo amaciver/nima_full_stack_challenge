@@ -16,6 +16,7 @@
   "homepage": "N/A",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "chart.js": "^2.6.0",
     "express": "^4.15.3",
     "sqlite3": "^3.1.8"
   }

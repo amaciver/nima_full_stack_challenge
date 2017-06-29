@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     cars = fetchCars().then( (cars) => populateTable(cars) );
     submitBtn = document.getElementById('car-submit');
     submitBtn.addEventListener('click', submitCar);
+
+    const pricesModal = document.getElementById('prices-modal');
+    const pricesClose = document.getElementById("close-modal");
+    pricesClose.onclick = () => { pricesModal.style.display = "none"; }
+    window.onclick = (event) => {
+      if (event.target == pricesModal) { pricesModal.style.display = "none"; }
+    }
   });
 
 const fetchCars = () => {
@@ -76,6 +83,9 @@ const populateTable = (cars) => {
     row.appendChild(cell);
     cell = document.createElement('td')
     cell.innerHTML = "<img class='data-icon' src='images/data-icon.png' alt='data-icon'>"
+    const pricesModal = document.getElementById('prices-modal');
+    cell.children[0].onclick = () => { pricesModal.style.display = "block"; }
+
     row.appendChild(cell);
 
     table.appendChild(row);

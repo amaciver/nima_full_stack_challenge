@@ -9,7 +9,12 @@
   </head>
   <body>
     <div class="page">
-
+      <div id="prices-modal" class="modal">
+        <div class="prices modal-content">
+          <span id='close-modal' class="close">&times;</span>
+          <p class="modal-text">Test</p>
+        </div>
+      </div>
       <div class="app-container">
         <header>
           <h1>
@@ -17,7 +22,6 @@
           </h1>
         </header>
         <div class="form-container">
-        <!-- <form action="/cars" method="post" class="form-container"> -->
           <div class="input-container">
             <input id="make-input" class="car-input" type="text" name="make" placeholder="Make" value="">
             <div class='error hidden'> Make cannot be blank </div>
@@ -31,7 +35,6 @@
             <div class='error hidden'> Year cannot be blank </div>
           </div>
           <input id="car-submit" class="car-submit" type="submit" name="make" value="ADD">
-        <!-- </form> -->
         </div>
 
         <table id="cars-table" class="cars-table">
