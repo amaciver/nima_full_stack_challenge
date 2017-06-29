@@ -19,6 +19,15 @@ const fetchCars = () => {
   });
 };
 
+const fetchPrices = (carId) => {
+  console.log(carId);
+  return $.ajax({
+    method: 'GET',
+    url: '/prices',
+    data: carId
+  });
+};
+
 const postCar = (car) => {
   return $.ajax({
     method: 'POST',
@@ -81,10 +90,15 @@ const populateTable = (cars) => {
     cell = document.createElement('td')
     cell.textContent = `${cars[car].year}`;
     row.appendChild(cell);
+
     cell = document.createElement('td')
     cell.innerHTML = "<img class='data-icon' src='images/data-icon.png' alt='data-icon'>"
     const pricesModal = document.getElementById('prices-modal');
-    cell.children[0].onclick = () => { pricesModal.style.display = "block"; }
+    cell.children[0].onclick = () => {
+      // console.log(car);
+      fetchPrices(car).then( (prices) => console.log(prices))
+      pricesModal.style.display = "block";
+    }
 
     row.appendChild(cell);
 

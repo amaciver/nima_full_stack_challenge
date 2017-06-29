@@ -32,7 +32,7 @@ app.get("/cars", function (req, res) {
 
 // Route to add car to list
 app.post("/cars", function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   if (req.body.make === '' || req.body.model === '' || req.body.year === '') {
     res.status(500).send({ error: 'Something failed!' })
   } else {
@@ -52,9 +52,11 @@ app.post("/cars", function (req, res) {
 // Route to get prices
 app.get("/prices", function (req, res) {
   db = new sqlite3.Database('cars.sqlite')
+  const carId = parseInt(Object.keys(req.query)[0])
+  console.log(carId);
   let data = {};
   let dbPromise = new Promise( (resolve, reject) => {
-    db.all(`SELECT rowid, car_id, year, price FROM prices WHERE car_id = ${req.body.car_id}`, (err, rows) => {
+    db.all(`SELECT rowid, car_id, year, price FROM prices WHERE car_id = ${carId}`, (err, rows) => {
       rows.forEach( (row) => {
         data[row.rowid] = { car_id: row.car_id, year: row.year, price: row.price }
       })
