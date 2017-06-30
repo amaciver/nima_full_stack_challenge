@@ -25,3 +25,4 @@ Bonus and refinements: 4 hours
 - [x] bonus features with prices
 - [x] 'loading' status after post
 - [x] 'success' UI feature of some sort
+- [x] removed promises from SQL, unnecessary
