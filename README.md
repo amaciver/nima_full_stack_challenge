@@ -20,9 +20,8 @@ Bonus and refinements: 4 hours
 
 
 
-### Refinements TBD
-* returning only the new car object to be appended onto the table instead of fetching all cars again
-* validating year as integer
-[X] bonus features with prices
-[X] 'loading' status after post
-[X] 'success' UI feature of some sort
+### Refinements (done)
+- [x] returning only the new car object to be appended onto the table instead of fetching all cars again
+- [x] bonus features with prices
+- [x] 'loading' status after post
+- [x] 'success' UI feature of some sort

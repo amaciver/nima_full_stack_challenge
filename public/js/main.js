@@ -40,7 +40,6 @@ const fetchCars = () => {
 };
 
 const fetchPrices = (carId) => {
-  console.log(carId);
   return $.ajax({
     method: 'GET',
     url: '/prices',
@@ -76,14 +75,11 @@ const submitCar = (e) => {
     submitBtn.className = 'car-submit loading';
     postCar(car)
     .then( (carRes) => {
-      console.log(carRes);
       submitBtn.value = 'SUCCESS!';
       submitBtn.className = 'car-submit success';
       const inputs = document.querySelectorAll('.car-input');
-      inputs.forEach( (input) => input.value = '')
-      fetchCars().then( (cars) => {
-        populateTable(cars);
-      })
+      inputs.forEach( (input) => input.value = '' )
+      addRow(carRes.car)
     })
     .catch( () => {
       console.log('fail');
@@ -109,19 +105,17 @@ const populateTable = (cars) => {
     let cell = document.createElement('td')
     cell.textContent = `${cars[car].make}`;
     row.appendChild(cell);
-    cell = document.createElement('td')
+    cell = document.createElement('td');
     cell.textContent = `${cars[car].model}`;
     row.appendChild(cell);
-    cell = document.createElement('td')
+    cell = document.createElement('td');
     cell.textContent = `${cars[car].year}`;
     row.appendChild(cell);
-
-    cell = document.createElement('td')
+    cell = document.createElement('td');
     cell.innerHTML = "<img class='data-icon' src='images/data-icon.png' alt='data-icon'>"
     const pricesModal = document.getElementById('prices-modal');
     cell.children[0].onclick = () => {
       fetchPrices(car).then( (prices) => {
-        console.log(prices)
         makeChart(prices)
       })
       pricesModal.style.display = "block";
@@ -132,10 +126,36 @@ const populateTable = (cars) => {
   })
 }
 
+const addRow = (car) => {
+  const table = document.getElementsByTagName('tbody')[0];
+  const row = document.createElement('tr');
+  row.className = 'table-row';
+  let cell = document.createElement('td')
+  cell.textContent = `${car.make}`;
+  row.appendChild(cell);
+  cell = document.createElement('td');
+  cell.textContent = `${car.model}`;
+  row.appendChild(cell);
+  cell = document.createElement('td');
+  cell.textContent = `${car.year}`;
+  row.appendChild(cell);
+  cell = document.createElement('td');
+  cell.innerHTML = "<img class='data-icon' src='images/data-icon.png' alt='data-icon'>"
+  const pricesModal = document.getElementById('prices-modal');
+  cell.children[0].onclick = () => {
+    fetchPrices(car.id).then( (prices) => {
+      makeChart(prices)
+    })
+    pricesModal.style.display = "block";
+  }
+  row.appendChild(cell);
+  table.appendChild(row);
+}
+
 let chart = null;
 
 const makeChart = (prices) => {
-  let make, model, carYear
+  let make, model, carYear, data, years
   let uniqYears = {};
   Object.keys(prices).forEach( (price) => {
     if (uniqYears[prices[price].year]) {
@@ -149,30 +169,25 @@ const makeChart = (prices) => {
       carYear = prices[price].car_year
     }
   });
-
   const modalText = document.querySelector('.modal-text');
-  modalText.innerHTML = `${carYear} ${make} ${model}`;
+  if (Object.keys(prices).length > 0) {
+    modalText.innerHTML = `${carYear} ${make} ${model}`;
+    const max = Math.max(...Object.keys(uniqYears));
+    const min = Math.min(...Object.keys(uniqYears));
+    years = Array.from(new Array(max+1-min), (x,i) => i + min);
+    data = years.map( (year) => {
+      const pricesArr = uniqYears[year]
+      if (pricesArr) {
+        var total = pricesArr.reduce( ( acc, cur ) => acc + cur, 0);
+        return (total/pricesArr.length);
+      } else {
+        return(null);
+      }
+    })
+  } else {
+    modalText.innerHTML = `No Pricing Data`;
+  }
 
-  const max = Math.max(...Object.keys(uniqYears));
-  const min = Math.min(...Object.keys(uniqYears));
-
-  const years = Array.from(new Array(max+1-min), (x,i) => i + min);
-
-  let data = years.map( (year) => {
-    const pricesArr = uniqYears[year]
-    if (pricesArr) {
-      var total = pricesArr.reduce( ( acc, cur ) => acc + cur, 0);
-      return (total/pricesArr.length);
-    } else {
-      return(null);
-    }
-  })
-  console.log(uniqYears);
-  console.log(years);
-  console.log(data);
-
-
-  // if (chart != null) { chart.destroy() }
   const ctx = document.getElementById('myChart').getContext('2d');
   chart = new Chart(ctx, {
       type: 'line',
