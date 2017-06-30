@@ -53,7 +53,6 @@ app.post("/cars", function (req, res) {
 app.get("/prices", function (req, res) {
   db = new sqlite3.Database('cars.sqlite')
   const carId = parseInt(Object.keys(req.query)[0])
-  console.log(carId);
   let data = {};
   let dbPromise = new Promise( (resolve, reject) => {
     db.all(`SELECT rowid, car_id, year, price FROM prices WHERE car_id = ${carId}`, (err, rows) => {

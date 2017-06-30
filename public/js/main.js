@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     pricesClose.onclick = () => { pricesModal.style.display = "none"; }
     window.onclick = (event) => {
       if (event.target == pricesModal) { pricesModal.style.display = "none"; }
+      if (chart != null) { chart.destroy() }
     }
   });
 
@@ -109,11 +110,10 @@ const populateTable = (cars) => {
   })
 }
 
+let chart = null;
+
 const makeChart = (prices) => {
-  // let tuples = Object.keys(prices).map( (price) => {
-  //   return [prices[price].year, prices[price].price]
-  // });
-  let uniqYears = {}
+  let uniqYears = {};
   Object.keys(prices).forEach( (price) => {
     if (uniqYears[prices[price].year]) {
       uniqYears[prices[price].year].push(prices[price].price)
@@ -121,52 +121,36 @@ const makeChart = (prices) => {
       uniqYears[prices[price].year] = [prices[price].price]
     }
   });
-  const max = Math.max(...Object.keys(uniqYears))
-  const min = Math.min(...Object.keys(uniqYears))
+  const max = Math.max(...Object.keys(uniqYears));
+  const min = Math.min(...Object.keys(uniqYears));
 
-  const years = Array.from(new Array(max+1-min), (x,i) => i + min)
-
+  const years = Array.from(new Array(max+1-min), (x,i) => i + min);
 
   let data = years.map( (year) => {
     const pricesArr = uniqYears[year]
     if (pricesArr) {
-      var total = pricesArr.reduce(
-        ( acc, cur ) => acc + cur,
-        0
-      );
-      return (
-        total/pricesArr.length
-      )
+      var total = pricesArr.reduce( ( acc, cur ) => acc + cur, 0);
+      return (total/pricesArr.length);
     } else {
-      return(null)
+      return(null);
     }
   })
   console.log(uniqYears);
   console.log(years);
   console.log(data);
-  // tuples = tuples.sort(sortFunction);
-  //
-  // function sortFunction(a, b) {
-  //     if (a[0] === b[0]) {
-  //         return 0;
-  //     }
-  //     else {
-  //         return (a[0] < b[0]) ? -1 : 1;
-  //     }
-  // }
-
+  if (chart != null) { chart.destroy() }
   const ctx = document.getElementById('myChart').getContext('2d');
-  const chart = new Chart(ctx, {
+  chart = new Chart(ctx, {
       type: 'line',
       data: {
           labels: years,
           datasets: [{
-              label: "My First dataset",
+              label: "Prices, Averaged by Year",
               backgroundColor: 'rgb(255, 99, 132)',
               borderColor: 'rgb(255, 99, 132)',
               data: data,
           }]
       },
-      options: {}
+      options: {spanGaps: true}
     });
 }
