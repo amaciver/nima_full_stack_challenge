@@ -1,20 +1,35 @@
 
 document.addEventListener("DOMContentLoaded", (event) => {
+    // Fetch data
     cars = fetchCars().then( (cars) => populateTable(cars) );
+
     submitBtn = document.getElementById('car-submit');
     submitBtn.addEventListener('click', submitCar);
 
+    // Set up prices modal
     const pricesModal = document.getElementById('prices-modal');
-    const pricesClose = document.getElementById("close-modal");
+    const pricesClose = document.getElementById('close-modal');
+    const modalText = document.querySelector('.modal-text');
+
     pricesClose.onclick = () => { pricesModal.style.display = "none"; }
     window.onclick = (event) => {
       if (event.target == pricesModal) {
         pricesModal.style.display = "none";
-        const modalText = document.querySelector('.modal-text');
-        modalText.innerHTML = ``; 
+        modalText.innerHTML = ``;
+        // Clear chart on modal close
         if (chart != null) { chart.destroy() }
       }
     }
+
+    // Set up error clearing
+    const inputs = document.querySelectorAll('.car-input');
+    inputs.forEach( (input) => {
+      input.addEventListener('focus', () => {
+        clearErrors(input.parentElement)
+        submitBtn.className = 'car-submit';
+        submitBtn.value = 'ADD';
+      })
+    })
   });
 
 const fetchCars = () => {
@@ -46,10 +61,9 @@ const postCar = (car) => {
 const submitCar = (e) => {
   e.preventDefault();
   const car = {};
-  const inputs = document.querySelectorAll('.car-input');
   let isBlanks;
+  const inputs = document.querySelectorAll('.car-input');
   inputs.forEach( (input) => {
-    input.addEventListener('focus', clearErrors(input.parentElement))
     car[[input.name]] = input.value;
     if (input.value === '') {
       renderErrors(input.parentElement);
@@ -57,8 +71,15 @@ const submitCar = (e) => {
     }
   })
   if (!isBlanks) {
+    const submitBtn = document.getElementById('car-submit');
+    submitBtn.value = 'LOADING';
+    submitBtn.className = 'car-submit loading';
     postCar(car)
     .then( () => {
+      submitBtn.value = 'SUCCESS!';
+      submitBtn.className = 'car-submit success';
+      const inputs = document.querySelectorAll('.car-input');
+      inputs.forEach( (input) => input.value = '')
       fetchCars().then( (cars) => {
         populateTable(cars);
       })
@@ -75,10 +96,8 @@ const renderErrors = (node) => {
 }
 
 const clearErrors = (node) => {
-  return (e) => {
-    node.children[0].className = 'car-input';
-    node.children[1].className = 'error hidden';
-  }
+  node.children[0].className = 'car-input';
+  node.children[1].className = 'error hidden';
 }
 
 const populateTable = (cars) => {
@@ -100,14 +119,12 @@ const populateTable = (cars) => {
     cell.innerHTML = "<img class='data-icon' src='images/data-icon.png' alt='data-icon'>"
     const pricesModal = document.getElementById('prices-modal');
     cell.children[0].onclick = () => {
-      // console.log(car);
       fetchPrices(car).then( (prices) => {
         console.log(prices)
         makeChart(prices)
       })
       pricesModal.style.display = "block";
     }
-
     row.appendChild(cell);
 
     table.appendChild(row);

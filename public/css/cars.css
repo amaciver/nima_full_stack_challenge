@@ -85,6 +85,24 @@ h1 {
   cursor: pointer;
 }
 
+.loading {
+  background: #4a67f7;
+  border: 1px solid #4a67f7;
+}
+.loading:hover {
+  background: #4a67f7;
+  border: 1px solid #4a67f7;
+}
+
+.success {
+  background: #44ff70;
+  border: 1px solid #44ff70;
+}
+.success:hover {
+  background: #44ff70;
+  border: 1px solid #44ff70;
+}
+
 
 .cars-table {
   width: 100%;
