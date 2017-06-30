@@ -96,7 +96,10 @@ const populateTable = (cars) => {
     const pricesModal = document.getElementById('prices-modal');
     cell.children[0].onclick = () => {
       // console.log(car);
-      fetchPrices(car).then( (prices) => console.log(prices))
+      fetchPrices(car).then( (prices) => {
+        console.log(prices)
+        makeChart(prices)
+      })
       pricesModal.style.display = "block";
     }
 
@@ -104,4 +107,66 @@ const populateTable = (cars) => {
 
     table.appendChild(row);
   })
+}
+
+const makeChart = (prices) => {
+  // let tuples = Object.keys(prices).map( (price) => {
+  //   return [prices[price].year, prices[price].price]
+  // });
+  let uniqYears = {}
+  Object.keys(prices).forEach( (price) => {
+    if (uniqYears[prices[price].year]) {
+      uniqYears[prices[price].year].push(prices[price].price)
+    } else {
+      uniqYears[prices[price].year] = [prices[price].price]
+    }
+  });
+  const max = Math.max(...Object.keys(uniqYears))
+  const min = Math.min(...Object.keys(uniqYears))
+
+  const years = Array.from(new Array(max+1-min), (x,i) => i + min)
+
+
+  let data = years.map( (year) => {
+    const pricesArr = uniqYears[year]
+    if (pricesArr) {
+      var total = pricesArr.reduce(
+        ( acc, cur ) => acc + cur,
+        0
+      );
+      return (
+        total/pricesArr.length
+      )
+    } else {
+      return(null)
+    }
+  })
+  console.log(uniqYears);
+  console.log(years);
+  console.log(data);
+  // tuples = tuples.sort(sortFunction);
+  //
+  // function sortFunction(a, b) {
+  //     if (a[0] === b[0]) {
+  //         return 0;
+  //     }
+  //     else {
+  //         return (a[0] < b[0]) ? -1 : 1;
+  //     }
+  // }
+
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: years,
+          datasets: [{
+              label: "My First dataset",
+              backgroundColor: 'rgb(255, 99, 132)',
+              borderColor: 'rgb(255, 99, 132)',
+              data: data,
+          }]
+      },
+      options: {}
+    });
 }

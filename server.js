@@ -57,9 +57,11 @@ app.get("/prices", function (req, res) {
   let data = {};
   let dbPromise = new Promise( (resolve, reject) => {
     db.all(`SELECT rowid, car_id, year, price FROM prices WHERE car_id = ${carId}`, (err, rows) => {
-      rows.forEach( (row) => {
+      if (rows !== null) {
+        rows.forEach( (row) => {
         data[row.rowid] = { car_id: row.car_id, year: row.year, price: row.price }
-      })
+        })
+      }
     resolve(data);
     })
   })
