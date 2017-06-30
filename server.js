@@ -55,10 +55,10 @@ app.get("/prices", function (req, res) {
   const carId = parseInt(Object.keys(req.query)[0])
   let data = {};
   let dbPromise = new Promise( (resolve, reject) => {
-    db.all(`SELECT rowid, car_id, year, price FROM prices WHERE car_id = ${carId}`, (err, rows) => {
+    db.all(`SELECT prices.rowid, prices.year, prices.price, cars.make, cars.model, cars.year AS car_year FROM prices JOIN cars ON cars.rowid = prices.car_id WHERE prices.car_id = ${carId}`, (err, rows) => {
       if (rows !== null) {
         rows.forEach( (row) => {
-        data[row.rowid] = { car_id: row.car_id, year: row.year, price: row.price }
+        data[row.rowid] = { car_year: row.car_year, make: row.make, model: row.model, year: row.year, price: row.price }
         })
       }
     resolve(data);

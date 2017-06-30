@@ -8,8 +8,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const pricesClose = document.getElementById("close-modal");
     pricesClose.onclick = () => { pricesModal.style.display = "none"; }
     window.onclick = (event) => {
-      if (event.target == pricesModal) { pricesModal.style.display = "none"; }
-      if (chart != null) { chart.destroy() }
+      if (event.target == pricesModal) {
+        pricesModal.style.display = "none";
+        const modalText = document.querySelector('.modal-text');
+        modalText.innerHTML = ``; 
+        if (chart != null) { chart.destroy() }
+      }
     }
   });
 
@@ -113,6 +117,7 @@ const populateTable = (cars) => {
 let chart = null;
 
 const makeChart = (prices) => {
+  let make, model, carYear
   let uniqYears = {};
   Object.keys(prices).forEach( (price) => {
     if (uniqYears[prices[price].year]) {
@@ -120,7 +125,16 @@ const makeChart = (prices) => {
     } else {
       uniqYears[prices[price].year] = [prices[price].price]
     }
+    if (!make || !model || !carYear) {
+      make = prices[price].make
+      model = prices[price].model
+      carYear = prices[price].car_year
+    }
   });
+
+  const modalText = document.querySelector('.modal-text');
+  modalText.innerHTML = `${carYear} ${make} ${model}`;
+
   const max = Math.max(...Object.keys(uniqYears));
   const min = Math.min(...Object.keys(uniqYears));
 
@@ -138,7 +152,9 @@ const makeChart = (prices) => {
   console.log(uniqYears);
   console.log(years);
   console.log(data);
-  if (chart != null) { chart.destroy() }
+
+
+  // if (chart != null) { chart.destroy() }
   const ctx = document.getElementById('myChart').getContext('2d');
   chart = new Chart(ctx, {
       type: 'line',

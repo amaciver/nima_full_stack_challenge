@@ -1,6 +1,6 @@
-/* The Modal (background) */
+
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -24,6 +24,7 @@
     box-shadow: 1px 1px 6px 9px grey;
     width: 80%;
 }
+
 .prices {
   min-width: 50%;
   max-width: 70%;
@@ -32,4 +33,13 @@
   font-size: 25px;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   margin-top: 20vh;
+}
+
+.close {
+  position: relative;
+  float: right;
+  top: -13px;
+}
+.close:hover {
+  cursor: pointer;
 }
