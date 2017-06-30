@@ -37,15 +37,21 @@ app.post("/cars", function (req, res) {
     res.status(500).send({ error: 'Something failed!' })
   } else {
     db = new sqlite3.Database('cars.sqlite')
-    let dbPromise = new Promise( (resolve, reject) => {
-      var stmt = db.prepare('INSERT INTO cars VALUES (?, ?, ?, ?)', () => resolve())
-      stmt.run(req.body.make, req.body.model, req.body.year, 'clear')
-      stmt.finalize()
+    let stmt = db.prepare('INSERT INTO cars VALUES (?, ?, ?, ?)')
+    stmt.run(req.body.make, req.body.model, req.body.year, 'clear', function(err) {
+      res.json({success : "Updated Successfully", status : 200, car: {id: this.lastID, make: req.body.make, model: req.body.model, year: req.body.year}});
+      stmt.finalize();
+      db.close();
     })
-    dbPromise.then( () => {
-      res.json({success : "Updated Successfully", status : 200});
-    })
-    db.close();
+    // let dbPromise = new Promise( (resolve, reject) => {
+    //   var stmt = db.prepare('INSERT INTO cars VALUES (?, ?, ?, ?)', () => resolve())
+    //   stmt.run(req.body.make, req.body.model, req.body.year, 'clear')
+    //   stmt.finalize()
+    // })
+    // dbPromise.then( () => {
+    //   res.json({success : "Updated Successfully", status : 200});
+    // })
+    // db.close();
   }
 })
 

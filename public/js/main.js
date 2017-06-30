@@ -75,7 +75,8 @@ const submitCar = (e) => {
     submitBtn.value = 'LOADING';
     submitBtn.className = 'car-submit loading';
     postCar(car)
-    .then( () => {
+    .then( (carRes) => {
+      console.log(carRes);
       submitBtn.value = 'SUCCESS!';
       submitBtn.className = 'car-submit success';
       const inputs = document.querySelectorAll('.car-input');
